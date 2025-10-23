@@ -89,6 +89,22 @@ desc_map = {
 # === 3. UI Streamlit ===
 st.set_page_config(page_title="MBTI Personality Test", page_icon="🧠", layout="wide")
 st.title("🧩 Tes Kepribadian MBTI Mahasiswa")
+st.markdown("""
+### 📋 **Petunjuk Pengisian Tes MBTI**
+
+Silakan isi form berikut dengan **jujur dan sesuai kepribadian Anda**. Tidak ada jawaban benar atau salah—pilih jawaban yang **paling mencerminkan diri Anda sendiri**, bukan yang menurut Anda ideal.
+
+Gunakan skala **1 sampai 5** untuk menilai setiap pernyataan berikut:
+
+- **1** – Sangat Tidak Setuju  
+- **2** – Tidak Setuju  
+- **3** – Netral / Ragu-ragu  
+- **4** – Setuju  
+- **5** – Sangat Setuju  
+
+📌 Harap **baca setiap pernyataan dengan saksama** dan pilih jawaban yang paling sesuai dengan diri Anda.
+""")
+
 
 # === 4. Handle Session Reset ===
 if "submitted" not in st.session_state:
@@ -142,6 +158,7 @@ else:
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{st.session_state.mbti}**")
     st.info(st.session_state.deskripsi)
     st.balloons()
+
 
 
 
