@@ -147,7 +147,8 @@ if submit:
 
         # === Simpan ke Google Sheets ===
        # ✅ tambahkan dua baris ini sebelum append_row
-
+SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+worksheet = gc.open_by_key(SHEET_KEY).sheet1
 
 try:
     # coba akses via KEY (paling stabil)
@@ -176,6 +177,7 @@ except (RefreshError, APIError) as e:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
