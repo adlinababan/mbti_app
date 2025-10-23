@@ -99,7 +99,7 @@ if not st.session_state.submitted:
     with st.form("form_mbti"):
         st.subheader("🧍 Identitas Responden")
         nama = st.text_input("Nama Lengkap")
-        prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business"])
+        prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business", "International Trade", "Design Communication Visual"])
         gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
         semester = st.selectbox("Semester", ["", "1", "2", "3", "4", "5", "6", "7", "8"])
 
@@ -142,6 +142,7 @@ else:
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{st.session_state.mbti}**")
     st.info(st.session_state.deskripsi)
     st.balloons()
+
 
 
 
