@@ -21,9 +21,6 @@ gc = gspread.authorize(creds)
 
 # === 2. Buka Spreadsheet menggunakan KEY ===
 SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-worksheet = gc.open_by_key(SHEET_KEY).sheet1
-
-
 
 try:
     worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
@@ -171,6 +168,7 @@ try:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
