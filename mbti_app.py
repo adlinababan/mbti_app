@@ -149,16 +149,15 @@ if submit:
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # === Simpan ke Google Sheets === #
-        # Pastikan worksheet sudah terdefinisi
-        SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-try:
-    worksheet = gc.open_by_key(SHEET_KEY).sheet1
-
+                # === Simpan ke Google Sheets === #
+        try:
+            SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+            worksheet = gc.open_by_key(SHEET_KEY).sheet1
+            worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
         except Exception as e:
-            st.error(f"Gagal mengakses Google Sheet: {e}")
+            st.error(f"Gagal menyimpan ke Google Sheet: {e}")
             st.stop()
-        worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
+
 
 
 
@@ -168,6 +167,7 @@ try:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
