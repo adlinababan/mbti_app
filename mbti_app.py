@@ -148,7 +148,8 @@ if submit:
             st.error(f"Gagal menyimpan ke Google Sheet: {e}")
 
 if st.session_state.submitted:
-    st.success("✅ Terima kasih telah mengisi tes!")
+    st.success(f"✅ Terima kasih, {nama}!")
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
     st.info(deskripsi)
     st.balloons()
+
