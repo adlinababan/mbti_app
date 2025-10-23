@@ -23,11 +23,10 @@ gc = gspread.authorize(creds)
 SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
 
 try:
-    worksheet = gc.open_by_key(SHEET_KEY).sheet1
+    worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
     st.success("✅ Terhubung ke Google Sheet dengan sukses!")
 except Exception as e:
-    st.error(f"❌ Gagal membuka Google Sheet.\nCek apakah email service account sudah diberi akses Editor.\n\nError: {e}")
-    st.stop()
+    st.error(f"❌ Gagal terhubung: {e}")
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -168,6 +167,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
