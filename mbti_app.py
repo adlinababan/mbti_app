@@ -73,7 +73,7 @@ if not st.session_state.submitted:
                 st.session_state.nama = nama
                 st.session_state.deskripsi = deskripsi
                 st.session_state.submitted = True
-                st.experimental_rerun()
+                st.rerun()
             except Exception as e:
                 st.error(f"Gagal menyimpan ke Google Sheet: {e}")
 
@@ -83,3 +83,4 @@ else:
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{st.session_state.mbti}**")
     st.info(st.session_state.deskripsi)
     st.balloons()
+
