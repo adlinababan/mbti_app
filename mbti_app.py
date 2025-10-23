@@ -18,8 +18,11 @@ creds = Credentials.from_service_account_info(
 )
 gc = gspread.authorize(creds)
 
-SHEET_NAME = "MBTI_Survey_Results"
-worksheet = gc.open(SHEET_NAME).sheet1
+# SHEET_NAME = "MBTI_Survey_Results"
+# worksheet = gc.open(SHEET_NAME).sheet1
+
+# Gunakan akses langsung berdasarkan URL
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit#gid=0"
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -150,6 +153,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
