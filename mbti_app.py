@@ -145,16 +145,28 @@ if submit:
 
         # === Simpan ke Google Sheets ===
        # ✅ tambahkan dua baris ini sebelum append_row
-        SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-        worksheet = gc.open_by_key(SHEET_KEY).sheet1
-        
-        worksheet.append_row([
-                timestamp,
-                st.session_state.get("nama", ""),
-                st.session_state.get("prodi", ""),
-                st.session_state.get("gender", ""),
-                st.session_state.get("semester", "")
-            ] + answers + [mbti, deskripsi])
+        from google.auth.exceptions import RefreshError
+from gspread.exceptions import APIError
+
+try:
+    # coba akses via KEY (paling stabil)
+    worksheet = gc.open_by_key(SHEET_KEY).sheet1
+except (RefreshError, APIError) as e:
+    # fallback: coba via URL jika key gagal
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit#gid=0"
+    try:
+        worksheet = gc.open_by_url(SHEET_URL).sheet1
+    except Exception as ee:
+        st.error(
+            "❌ Tidak bisa membuka Google Sheet.\n\n"
+            "Cek 3 hal ini:\n"
+            f"1) Sheet sudah di-**Share as Editor** ke: **{st.secrets['gcp_service_account']['client_email']}**\n"
+            "2) **Google Sheets API** & **Google Drive API** sudah *Enabled* di project yang sama.\n"
+            "3) `private_key` di secrets mengandung `\\n` (baris baru) yang benar.\n"
+            f"\nDetail teknis: {type(ee).__name__}"
+        )
+        st.stop()
+
 
 
 
@@ -163,6 +175,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
