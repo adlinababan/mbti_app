@@ -18,8 +18,6 @@ creds = Credentials.from_service_account_file(
     scopes=SCOPE
 )
 
-    scopes=SCOPE
-)
 gc = gspread.authorize(creds)
 
 # === 2. Buka Spreadsheet menggunakan KEY ===
@@ -170,6 +168,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
