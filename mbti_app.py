@@ -133,11 +133,13 @@ with st.form("form_mbti"):
         val = st.slider("", 1, 5, 3, key=f"Q{i}")
         answers.append(val)
 
-    submit = st.form_submit_button("✅ Kirim Jawaban")
+    submit = st.form_submit_button("✅ Kirim Jawaban", on_click=lambda: st.session_state.update({"submitted": True}))
 
-if submit:
+
+if st.session_state.get("submitted"):
     if not nama or not prodi:
         st.error("⚠️ Harap isi nama dan program studi!")
+        st.session_state.submitted = False  # reset agar tidak langsung rerun ulang lagi
     else:
         # === Hitung skor MBTI ===
         scores = {k: sum(answers[i-1] for i in v) for k, v in questions.items()}
@@ -165,11 +167,10 @@ if submit:
         st.info(deskripsi)
         st.balloons()
 
-        # === Reset session state untuk clear form ===
-        for i in range(1, 49):
-            st.session_state.pop(f"Q{i}", None)
-        st.session_state["form_mbti"] = False
+        # === Reset session state dan rerun ===
+        st.session_state.clear()
         st.experimental_rerun()
+
 
 
 
