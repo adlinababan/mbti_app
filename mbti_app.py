@@ -13,7 +13,7 @@ SCOPE = [
 ]
 
 creds = Credentials.from_service_account_info(
-    json.loads(st.secrets["gcp_service_account"]),
+    dict(st.secrets["gcp_service_account"]),
     scopes=SCOPE
 )
 gc = gspread.authorize(creds)
@@ -150,4 +150,5 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
