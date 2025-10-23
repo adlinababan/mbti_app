@@ -144,13 +144,17 @@ if submit:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # === Simpan ke Google Sheets ===
+       # ✅ tambahkan dua baris ini sebelum append_row
+        SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+        worksheet = gc.open_by_key(SHEET_KEY).sheet1
+        
         worksheet.append_row([
-                                timestamp,
-                                st.session_state.get("nama", ""),
-                                st.session_state.get("prodi", ""),
-                                st.session_state.get("gender", ""),
-                                st.session_state.get("semester", "")
-                            ] + answers + [mbti, deskripsi])
+                timestamp,
+                st.session_state.get("nama", ""),
+                st.session_state.get("prodi", ""),
+                st.session_state.get("gender", ""),
+                st.session_state.get("semester", "")
+            ] + answers + [mbti, deskripsi])
 
 
 
@@ -159,6 +163,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
