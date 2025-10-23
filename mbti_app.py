@@ -135,7 +135,7 @@ with st.form("form_mbti"):
     if "submitted" not in st.session_state:
         st.session_state.submitted = False
     
-  submit = st.form_submit_button("✅ Kirim Jawaban")
+      submit = st.form_submit_button("✅ Kirim Jawaban")
 
  if submit:
     if not nama or not prodi:
@@ -164,6 +164,7 @@ with st.form("form_mbti"):
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
