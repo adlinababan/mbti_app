@@ -18,7 +18,7 @@ creds = Credentials.from_service_account_info(
 )
 gc = gspread.authorize(creds)
 
-SHEET_NAME = "MBTI_Survey_Results"
+SHEET_NAME = "MBTI Survey Results"
 worksheet = gc.open(SHEET_NAME).sheet1
 
 # === 2. Pertanyaan MBTI ===
@@ -150,5 +150,6 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
