@@ -68,12 +68,22 @@ text_questions = [
 ]
 
 desc_map = {
-    "ISTJ": "Teliti dan logis.", "ISFJ": "Setia dan peduli.", "INFJ": "Visioner dan empatik.",
-    "INTJ": "Strategis dan mandiri.", "ISTP": "Eksperimen praktis.", "ISFP": "Fleksibel dan kreatif.",
-    "INFP": "Nilai dan empati.", "INTP": "Analitis dan logis.", "ESTP": "Spontan dan realistis.",
-    "ESFP": "Ceria dan sosial.", "ENFP": "Ekspresif dan kreatif.", "ENTP": "Inovatif dan tajam.",
-    "ESTJ": "Tegas dan efisien.", "ESFJ": "Ramah dan bertanggung jawab.", "ENFJ": "Karismatik dan inspiratif.",
-    "ENTJ": "Ambisius dan strategis."
+    "ISTJ": "The Inspector – Teliti, logis, bertanggung jawab, dan berorientasi pada fakta. Menyukai struktur dan keteraturan.",
+    "ISFJ": "The Defender – Setia, penuh perhatian, dan sabar. Suka membantu dan melindungi orang lain dengan cara yang praktis.",
+    "INFJ": "The Advocate – Idealistik, visioner, dan berempati.",
+    "INTJ": "The Architect – Strategis, analitis, dan mandiri. Punya visi besar.",
+    "ISTP": "The Virtuoso – Logis, tangguh, dan suka bereksperimen secara praktis.",
+    "ISFP": "The Adventurer – Lembut, fleksibel, dan kreatif.",
+    "INFP": "The Mediator – Idealistik, empatik, dan berorientasi nilai.",
+    "INTP": "The Thinker – Analitis, penasaran, dan logis.",
+    "ESTP": "The Dynamo – Energik, spontan, dan realistis.",
+    "ESFP": "The Performer – Ceria, sosial, dan penuh semangat.",
+    "ENFP": "The Campaigner – Antusias, kreatif, dan ekspresif.",
+    "ENTP": "The Debater – Inovatif, argumentatif, dan tajam.",
+    "ESTJ": "The Executive – Terorganisir, tegas, dan efisien.",
+    "ESFJ": "The Consul – Ramah, peduli, dan bertanggung jawab.",
+    "ENFJ": "The Protagonist – Karismatik, empatik, dan inspiratif.",
+    "ENTJ": "The Commander – Tegas, berwawasan luas, dan ambisius."
 }
 
 # === 3. UI Streamlit ===
@@ -132,5 +142,6 @@ else:
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{st.session_state.mbti}**")
     st.info(st.session_state.deskripsi)
     st.balloons()
+
 
 
