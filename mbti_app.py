@@ -144,13 +144,21 @@ if submit:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # === Simpan ke Google Sheets ===
-        worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
+        worksheet.append_row([
+                                timestamp,
+                                st.session_state.get("nama", ""),
+                                st.session_state.get("prodi", ""),
+                                st.session_state.get("gender", ""),
+                                st.session_state.get("semester", "")
+                            ] + answers + [mbti, deskripsi])
+
 
         # === Tampilkan hasil ===
         st.success(f"✅ Terima kasih, {nama}!")
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
