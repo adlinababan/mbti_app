@@ -21,6 +21,7 @@ gc = gspread.authorize(creds)
 
 # === 3. Koneksi ke Google Sheets via URL ===
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
+worksheet = gc.open_by_key(SHEET_KEY).sheet1
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -144,6 +145,7 @@ if submit:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # === Simpan ke Google Sheets ===
+        global worksheet
         worksheet.append_row([
                                 timestamp,
                                 st.session_state.get("nama", ""),
@@ -153,11 +155,13 @@ if submit:
                             ] + answers + [mbti, deskripsi])
 
 
+
         # === Tampilkan hasil ===
         st.success(f"✅ Terima kasih, {nama}!")
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
