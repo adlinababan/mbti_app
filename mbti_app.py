@@ -21,6 +21,7 @@ gc = gspread.authorize(creds)
 
 # === 3. Koneksi ke Google Sheets via URL ===
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
+worksheet = gc.open_by_url(SHEET_URL).sheet1  
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -160,6 +161,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
