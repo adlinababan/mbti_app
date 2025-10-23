@@ -6,6 +6,7 @@ import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
 import json
+from datetime import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -153,6 +154,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
