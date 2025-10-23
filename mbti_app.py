@@ -23,11 +23,11 @@ gc = gspread.authorize(creds)
 # === 2. Buka Spreadsheet menggunakan KEY ===
 SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
 
-try:
-    worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
-    st.success("✅ Terhubung ke Google Sheet dengan sukses!")
-except Exception as e:
-    st.error(f"❌ Gagal terhubung: {e}")
+# try:
+#     worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
+#     st.success("✅ Terhubung ke Google Sheet dengan sukses!")
+# except Exception as e:
+#     st.error(f"❌ Gagal terhubung: {e}")
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -170,5 +170,6 @@ if submit:
             st.session_state.pop(f"Q{i}", None)
         st.session_state["form_mbti"] = False
         st.experimental_rerun()
+
 
 
