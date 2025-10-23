@@ -132,44 +132,40 @@ with st.form("form_mbti"):
         st.markdown(f"**{i}. {q}**")
         val = st.slider("", 1, 5, 3, key=f"Q{i}")
         answers.append(val)
+    if "submitted" not in st.session_state:
+    st.session_state.submitted = False
+    
+  submit = st.form_submit_button("✅ Kirim Jawaban")
 
-    submit = st.form_submit_button("✅ Kirim Jawaban", on_click=lambda: st.session_state.update({"submitted": True}))
-
-
-if st.session_state.get("submitted"):
+ if submit:
     if not nama or not prodi:
         st.error("⚠️ Harap isi nama dan program studi!")
-        st.session_state.submitted = False  # reset agar tidak langsung rerun ulang lagi
     else:
-        # === Hitung skor MBTI ===
+        # Hitung dan simpan hasil
         scores = {k: sum(answers[i-1] for i in v) for k, v in questions.items()}
         EI = "E" if scores["E"] > scores["I"] else "I"
         SN = "S" if scores["S"] > scores["N"] else "N"
         TF = "T" if scores["T"] > scores["F"] else "F"
         JP = "J" if scores["J"] > scores["P"] else "P"
         mbti = EI + SN + TF + JP
-
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                # === Simpan ke Google Sheets === #
         try:
-            SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
             worksheet = gc.open_by_key(SHEET_KEY).sheet1
             worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
+            st.session_state.submitted = True  # set flag sukses
         except Exception as e:
             st.error(f"Gagal menyimpan ke Google Sheet: {e}")
-            st.stop()
 
         # === Tampilkan hasil ===
-        st.success(f"✅ Terima kasih, {nama}!")
+         if st.session_state.submitted:
+        st.success("✅ Terima kasih telah mengisi tes!")
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
 
-        # === Reset session state dan rerun ===
-        st.session_state.clear()
-        st.experimental_rerun()
+
 
 
 
