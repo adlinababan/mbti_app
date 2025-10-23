@@ -110,10 +110,18 @@ st.markdown("Isi form berikut untuk mengetahui tipe kepribadian MBTI Anda berdas
 if "submitted" not in st.session_state:
     st.session_state.submitted = False
 
+# === 5. Form Identitas ===
 with st.form("form_mbti"):
-    st.subheader("🧝 Identitas Responden")
-    nama = st.text_input("Nama Lengkap")
-    prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business", "International Trade", "Design Communication Visual"])
+    st.subheader("🧍 Identitas Responden")
+
+    # Gunakan session_state agar bisa di-reset
+    if "nama" not in st.session_state:
+        st.session_state.nama = ""
+    if "prodi" not in st.session_state:
+        st.session_state.prodi = ""
+
+    nama = st.text_input("Nama Lengkap", value=st.session_state.nama, key="nama_input")
+    prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business", "International Trade", "Design Communication Visual"], index=0, key="prodi_input")
     gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
     semester = st.selectbox("Semester", ["", "1", "2", "3", "4", "5", "6", "7", "8"])
 
@@ -136,20 +144,21 @@ if submit:
         TF = "T" if scores["T"] > scores["F"] else "F"
         JP = "J" if scores["J"] > scores["P"] else "P"
         mbti = EI + SN + TF + JP
-
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         try:
             worksheet = gc.open_by_key(SHEET_KEY).sheet1
             worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
-            st.session_state.submitted = True
+            
+            # Reset field input
+            st.session_state.nama_input = ""
+            st.session_state.prodi_input = ""
+            
+            # Tampilkan hasil
+            st.success(f"✅ Terima kasih, {nama}!")
+            st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
+            st.info(deskripsi)
+            st.balloons()
         except Exception as e:
             st.error(f"Gagal menyimpan ke Google Sheet: {e}")
-
-if st.session_state.submitted:
-    st.success(f"✅ Terima kasih, {nama}!")
-    st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
-    st.info(deskripsi)
-    st.balloons()
-
