@@ -5,12 +5,17 @@
 import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
-from datetime import datetime
+import json
 
-# === 1. Konfigurasi Google Sheets ===
-# Upload file JSON credential Anda ke Streamlit Cloud (atau lokal)
-SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_file("credentials.json", scopes=SCOPE)
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+creds = Credentials.from_service_account_info(
+    json.loads(st.secrets["gcp_service_account"]),
+    scopes=SCOPE
+)
 gc = gspread.authorize(creds)
 
 SHEET_NAME = "MBTI_Survey_Results"
@@ -145,3 +150,4 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
