@@ -133,7 +133,7 @@ with st.form("form_mbti"):
         val = st.slider("", 1, 5, 3, key=f"Q{i}")
         answers.append(val)
     if "submitted" not in st.session_state:
-    st.session_state.submitted = False
+        st.session_state.submitted = False
     
   submit = st.form_submit_button("✅ Kirim Jawaban")
 
@@ -164,6 +164,7 @@ with st.form("form_mbti"):
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
