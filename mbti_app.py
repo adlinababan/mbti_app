@@ -11,17 +11,19 @@ from google.auth.exceptions import RefreshError
 from gspread.exceptions import APIError
 
 
-SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_info(dict(st.secrets["gcp_service_account"]), scopes=SCOPE)
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+creds = Credentials.from_service_account_info(
+    dict(st.secrets["gcp_service_account"]),
+    scopes=SCOPE
+)
 gc = gspread.authorize(creds)
 
-SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-
-try:
-    sh = gc.open_by_key(SHEET_KEY)
-    print("✅ Koneksi berhasil:", sh.title)
-except Exception as e:
-    print("❌ Gagal koneksi:", e)
+# === 3. Koneksi ke Google Sheets via URL ===
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -176,6 +178,7 @@ except (RefreshError, APIError) as e:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
