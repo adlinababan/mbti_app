@@ -21,12 +21,12 @@ gc = gspread.authorize(creds)
 
 # === 2. Buka Spreadsheet menggunakan KEY ===
 # SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
+SHEET_URL = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
 
 
 
 try:
-    worksheet = gc.open_by_key("https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing").sheet1
+    worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
     st.success("✅ Terhubung ke Google Sheet dengan sukses!")
 except Exception as e:
     st.error(f"❌ Gagal terhubung: {e}")
@@ -170,6 +170,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
