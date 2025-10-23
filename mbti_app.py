@@ -7,6 +7,8 @@ import gspread
 from google.oauth2.service_account import Credentials
 import json
 from datetime import datetime
+from google.auth.exceptions import RefreshError
+from gspread.exceptions import APIError
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -145,8 +147,7 @@ if submit:
 
         # === Simpan ke Google Sheets ===
        # ✅ tambahkan dua baris ini sebelum append_row
-        from google.auth.exceptions import RefreshError
-from gspread.exceptions import APIError
+
 
 try:
     # coba akses via KEY (paling stabil)
@@ -175,6 +176,7 @@ except (RefreshError, APIError) as e:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
