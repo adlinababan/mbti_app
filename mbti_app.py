@@ -5,9 +5,9 @@
 import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
+import json
 from datetime import datetime
 
-# === 1. Autentikasi Google Sheets ===
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
@@ -19,23 +19,10 @@ creds = Credentials.from_service_account_info(
 )
 gc = gspread.authorize(creds)
 
-# Gunakan open_by_key agar lebih stabil di Streamlit Cloud
-SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+# === 3. Koneksi ke Google Sheets via URL ===
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
 
-try:
-    worksheet = gc.open_by_key(SHEET_KEY).sheet1
-    st.success("✅ Koneksi ke Google Sheet berhasil!")
-except Exception as e:
-    st.error(f"❌ Gagal koneksi ke Google Sheet: {e}")
-    st.stop()  # Hentikan eksekusi jika gagal koneksi
-
-# === 2. Konfigurasi Streamlit ===
-st.set_page_config(page_title="MBTI Personality Test", page_icon="🧠", layout="wide")
-
-st.title("🧩 Tes Kepribadian MBTI Mahasiswa")
-st.markdown("Isi form berikut untuk mengetahui tipe kepribadian MBTI Anda berdasarkan 48 pertanyaan.")
-
-# === 3. Pertanyaan MBTI ===
+# === 2. Pertanyaan MBTI ===
 questions = {
     "E": [1,3,5,7,9,11],
     "I": [2,4,6,8,10,12],
@@ -98,12 +85,13 @@ text_questions = [
     "Saya sering bekerja sesuai mood atau inspirasi."
 ]
 
+# === 3. Deskripsi MBTI ===
 desc_map = {
     "ISTJ": "The Inspector – Teliti, logis, bertanggung jawab, dan berorientasi pada fakta. Menyukai struktur dan keteraturan.",
-    "ISFJ": "The Defender – Setia, penuh perhatian, dan sabar.",
+    "ISFJ": "The Defender – Setia, penuh perhatian, dan sabar. Suka membantu dan melindungi orang lain dengan cara yang praktis.",
     "INFJ": "The Advocate – Idealistik, visioner, dan berempati.",
-    "INTJ": "The Architect – Strategis, analitis, dan mandiri.",
-    "ISTP": "The Virtuoso – Logis, tangguh, dan suka bereksperimen.",
+    "INTJ": "The Architect – Strategis, analitis, dan mandiri. Punya visi besar.",
+    "ISTP": "The Virtuoso – Logis, tangguh, dan suka bereksperimen secara praktis.",
     "ISFP": "The Adventurer – Lembut, fleksibel, dan kreatif.",
     "INFP": "The Mediator – Idealistik, empatik, dan berorientasi nilai.",
     "INTP": "The Thinker – Analitis, penasaran, dan logis.",
@@ -117,7 +105,13 @@ desc_map = {
     "ENTJ": "The Commander – Tegas, berwawasan luas, dan ambisius."
 }
 
-# === 4. Form Input ===
+# === 4. UI Streamlit ===
+st.set_page_config(page_title="MBTI Personality Test", page_icon="🧠", layout="wide")
+
+st.title("🧩 Tes Kepribadian MBTI Mahasiswa")
+st.markdown("Isi form berikut untuk mengetahui tipe kepribadian MBTI Anda berdasarkan 48 pertanyaan.")
+
+# === 5. Form Identitas ===
 with st.form("form_mbti"):
     st.subheader("🧍 Identitas Responden")
     nama = st.text_input("Nama Lengkap")
@@ -134,11 +128,11 @@ with st.form("form_mbti"):
 
     submit = st.form_submit_button("✅ Kirim Jawaban")
 
-# === 5. Proses hasil dan kirim ke Google Sheet ===
 if submit:
     if not nama or not prodi:
         st.error("⚠️ Harap isi nama dan program studi!")
     else:
+        # === Hitung skor MBTI ===
         scores = {k: sum(answers[i-1] for i in v) for k, v in questions.items()}
         EI = "E" if scores["E"] > scores["I"] else "I"
         SN = "S" if scores["S"] > scores["N"] else "N"
@@ -149,11 +143,12 @@ if submit:
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        try:
-            worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
-            st.success(f"✅ Terima kasih, {nama}!")
-            st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
-            st.info(deskripsi)
-            st.balloons()
-        except Exception as e:
-            st.error(f"❌ Gagal menyimpan ke Google Sheet: {e}")
+        # === Simpan ke Google Sheets ===
+        worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
+
+        # === Tampilkan hasil ===
+        st.success(f"✅ Terima kasih, {nama}!")
+        st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
+        st.info(deskripsi)
+        st.balloons()
+
