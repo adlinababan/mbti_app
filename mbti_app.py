@@ -122,7 +122,7 @@ st.markdown("Isi form berikut untuk mengetahui tipe kepribadian MBTI Anda berdas
 with st.form("form_mbti"):
     st.subheader("🧍 Identitas Responden")
     nama = st.text_input("Nama Lengkap")
-    prodi = st.selectbox("Program Studi", ["", "Informatika", "Sistem Informasi", "Teknologi Informasi", "Manajemen", "Akuntansi", "Bisnis Digital"])
+    prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business", "International Trade", "Design Communication Visual"])
     gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
     semester = st.selectbox("Semester", ["", "1", "2", "3", "4", "5", "6", "7", "8"])
 
@@ -159,46 +159,8 @@ if submit:
             st.error(f"Gagal menyimpan ke Google Sheet: {e}")
             st.stop()
 
-
-
-
-
         # === Tampilkan hasil ===
         st.success(f"✅ Terima kasih, {nama}!")
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
