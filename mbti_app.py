@@ -146,29 +146,8 @@ if submit:
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # === Simpan ke Google Sheets ===
-       # ✅ tambahkan dua baris ini sebelum append_row
-SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
-worksheet = gc.open_by_key(SHEET_KEY).sheet1
-
-try:
-    # coba akses via KEY (paling stabil)
-    worksheet = gc.open_by_key(SHEET_KEY).sheet1
-except (RefreshError, APIError) as e:
-    # fallback: coba via URL jika key gagal
-    SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit#gid=0"
-    try:
-        worksheet = gc.open_by_url(SHEET_URL).sheet1
-    except Exception as ee:
-        st.error(
-            "❌ Tidak bisa membuka Google Sheet.\n\n"
-            "Cek 3 hal ini:\n"
-            f"1) Sheet sudah di-**Share as Editor** ke: **{st.secrets['gcp_service_account']['client_email']}**\n"
-            "2) **Google Sheets API** & **Google Drive API** sudah *Enabled* di project yang sama.\n"
-            "3) `private_key` di secrets mengandung `\\n` (baris baru) yang benar.\n"
-            f"\nDetail teknis: {type(ee).__name__}"
-        )
-        st.stop()
+        # === Simpan ke Google Sheets === #
+        worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
 
 
 
@@ -178,6 +157,7 @@ except (RefreshError, APIError) as e:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
