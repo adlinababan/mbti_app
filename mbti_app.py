@@ -16,7 +16,56 @@ questions = {
     "T": [25,27,29,31,33,35], "F": [26,28,30,32,34,36],
     "J": [37,39,41,43,45,47], "P": [38,40,42,44,46,48]
 }
-text_questions = [f"Pernyataan {i}" for i in range(1, 49)]  # Pakai dummy singkat
+text_questions = [
+"Saya merasa berenergi setelah berbicara dengan banyak orang.",
+"Saya lebih nyaman bekerja sendirian daripada dalam kelompok besar.",
+"Saya senang berbagi ide secara spontan di kelas.",
+"Saya lebih suka mendengarkan dulu sebelum berbicara.",
+"Saya menikmati suasana ramai dan aktif di kampus.",
+"Saya cenderung menyimpan pikiran saya sendiri.",
+"Saya senang memimpin diskusi atau kegiatan kelompok.",
+"Saya butuh waktu sendiri setelah berinteraksi dengan banyak orang.",
+"Saya sering memulai percakapan dengan orang baru.",
+"Saya lebih fokus saat bekerja di tempat yang tenang.",
+"Saya merasa nyaman tampil di depan umum.",
+"Saya sering merasa lelah setelah kegiatan sosial yang padat.",
+"Saya lebih percaya pada pengalaman nyata daripada teori.",
+"Saya tertarik pada ide dan konsep baru yang belum terbukti.",
+"Saya memperhatikan detail dalam setiap tugas.",
+"Saya lebih suka berpikir tentang kemungkinan masa depan daripada fakta sekarang.",
+"Saya lebih memahami materi melalui contoh konkret.",
+"Saya sering membayangkan berbagai skenario alternatif.",
+"Saya lebih suka instruksi yang jelas dan langkah demi langkah.",
+"Saya mudah menangkap pola atau makna tersembunyi.",
+"Saya lebih nyaman dengan hal-hal yang praktis.",
+"Saya sering punya intuisi tentang sesuatu sebelum ada buktinya.",
+"Saya lebih suka tugas dengan hasil nyata daripada konsep abstrak.",
+"Saya menikmati berpikir kreatif dan spekulatif.",
+"Saya membuat keputusan berdasarkan logika dan analisis.",
+"Saya mempertimbangkan dampak emosional terhadap orang lain.",
+"Saya lebih menghargai keadilan dibanding belas kasihan.",
+"Saya mudah memahami perasaan orang lain.",
+"Saya menilai sesuatu berdasarkan kebenaran objektif.",
+"Saya menghindari membuat orang lain tersinggung.",
+"Saya lebih percaya pada data dan fakta.",
+"Saya sering menyesuaikan keputusan demi menjaga hubungan baik.",
+"Saya merasa nyaman memberi kritik langsung.",
+"Saya merasa tidak enak jika keputusan saya membuat orang lain kecewa.",
+"Saya lebih fokus pada efisiensi daripada keharmonisan tim.",
+"Saya berusaha memahami alasan emosional di balik tindakan seseorang.",
+"Saya suka membuat rencana dan jadwal sebelum bekerja.",
+"Saya lebih suka mengikuti alur situasi daripada perencanaan ketat.",
+"Saya merasa puas ketika semua tugas selesai jauh sebelum tenggat waktu.",
+"Saya sering menunda pekerjaan hingga mendekati batas waktu.",
+"Saya suka menandai to-do list dan menepati target.",
+"Saya fleksibel terhadap perubahan mendadak.",
+"Saya lebih suka struktur yang jelas dan aturan yang pasti.",
+"Saya menikmati spontanitas dan ide baru di tengah proses kerja.",
+"Saya lebih tenang jika segalanya sudah direncanakan.",
+"Saya sering menemukan ide baru di menit-menit terakhir.",
+"Saya berorientasi pada hasil dan penyelesaian tugas.",
+"Saya sering bekerja sesuai mood atau inspirasi."
+]
 
 desc_map = {
     "ISTJ": "Teliti dan logis.", "ISFJ": "Setia dan peduli.", "INFJ": "Visioner dan empatik.",
@@ -83,4 +132,5 @@ else:
     st.markdown(f"### 🧠 Hasil MBTI Anda: **{st.session_state.mbti}**")
     st.info(st.session_state.deskripsi)
     st.balloons()
+
 
