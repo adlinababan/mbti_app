@@ -5,11 +5,7 @@
 import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
-import json
 from datetime import datetime
-from google.auth.exceptions import RefreshError
-from gspread.exceptions import APIError
-
 
 # === 1. Koneksi ke Google Sheets ===
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -23,22 +19,16 @@ gc = gspread.authorize(creds)
 # === 2. Buka Spreadsheet menggunakan KEY ===
 SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
 
-# try:
-#     worksheet = gc.open_by_key("1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0").sheet1
-#     st.success("✅ Terhubung ke Google Sheet dengan sukses!")
-# except Exception as e:
-#     st.error(f"❌ Gagal terhubung: {e}")
-
-# === 2. Pertanyaan MBTI ===
+# === 3. Pertanyaan MBTI ===
 questions = {
-    "E": [1,3,5,7,9,11],
-    "I": [2,4,6,8,10,12],
-    "S": [13,15,17,19,21,23],
-    "N": [14,16,18,20,22,24],
-    "T": [25,27,29,31,33,35],
-    "F": [26,28,30,32,34,36],
-    "J": [37,39,41,43,45,47],
-    "P": [38,40,42,44,46,48]
+    "E": [1, 3, 5, 7, 9, 11],
+    "I": [2, 4, 6, 8, 10, 12],
+    "S": [13, 15, 17, 19, 21, 23],
+    "N": [14, 16, 18, 20, 22, 24],
+    "T": [25, 27, 29, 31, 33, 35],
+    "F": [26, 28, 30, 32, 34, 36],
+    "J": [37, 39, 41, 43, 45, 47],
+    "P": [38, 40, 42, 44, 46, 48]
 }
 
 text_questions = [
@@ -92,13 +82,13 @@ text_questions = [
     "Saya sering bekerja sesuai mood atau inspirasi."
 ]
 
-# === 3. Deskripsi MBTI ===
+# === 4. Deskripsi MBTI ===
 desc_map = {
-    "ISTJ": "The Inspector – Teliti, logis, bertanggung jawab, dan berorientasi pada fakta. Menyukai struktur dan keteraturan.",
-    "ISFJ": "The Defender – Setia, penuh perhatian, dan sabar. Suka membantu dan melindungi orang lain dengan cara yang praktis.",
+    "ISTJ": "The Inspector – Teliti, logis, bertanggung jawab, dan berorientasi pada fakta.",
+    "ISFJ": "The Defender – Setia, penuh perhatian, dan sabar.",
     "INFJ": "The Advocate – Idealistik, visioner, dan berempati.",
-    "INTJ": "The Architect – Strategis, analitis, dan mandiri. Punya visi besar.",
-    "ISTP": "The Virtuoso – Logis, tangguh, dan suka bereksperimen secara praktis.",
+    "INTJ": "The Architect – Strategis, analitis, dan mandiri.",
+    "ISTP": "The Virtuoso – Logis, tangguh, dan suka bereksperimen.",
     "ISFP": "The Adventurer – Lembut, fleksibel, dan kreatif.",
     "INFP": "The Mediator – Idealistik, empatik, dan berorientasi nilai.",
     "INTP": "The Thinker – Analitis, penasaran, dan logis.",
@@ -112,15 +102,16 @@ desc_map = {
     "ENTJ": "The Commander – Tegas, berwawasan luas, dan ambisius."
 }
 
-# === 4. UI Streamlit ===
+# === 5. UI Streamlit ===
 st.set_page_config(page_title="MBTI Personality Test", page_icon="🧠", layout="wide")
-
 st.title("🧩 Tes Kepribadian MBTI Mahasiswa")
 st.markdown("Isi form berikut untuk mengetahui tipe kepribadian MBTI Anda berdasarkan 48 pertanyaan.")
 
-# === 5. Form Identitas ===
+if "submitted" not in st.session_state:
+    st.session_state.submitted = False
+
 with st.form("form_mbti"):
-    st.subheader("🧍 Identitas Responden")
+    st.subheader("🧝 Identitas Responden")
     nama = st.text_input("Nama Lengkap")
     prodi = st.selectbox("Program Studi", ["", "Information Systems", "Computer Science", "Digital Business", "International Trade", "Design Communication Visual"])
     gender = st.radio("Jenis Kelamin", ["Laki-laki", "Perempuan"])
@@ -132,43 +123,32 @@ with st.form("form_mbti"):
         st.markdown(f"**{i}. {q}**")
         val = st.slider("", 1, 5, 3, key=f"Q{i}")
         answers.append(val)
-    if "submitted" not in st.session_state:
-        st.session_state.submitted = False
-    
-      submit = st.form_submit_button("✅ Kirim Jawaban")
 
- if submit:
+    submit = st.form_submit_button("✅ Kirim Jawaban")
+
+if submit:
     if not nama or not prodi:
         st.error("⚠️ Harap isi nama dan program studi!")
     else:
-        # Hitung dan simpan hasil
         scores = {k: sum(answers[i-1] for i in v) for k, v in questions.items()}
         EI = "E" if scores["E"] > scores["I"] else "I"
         SN = "S" if scores["S"] > scores["N"] else "N"
         TF = "T" if scores["T"] > scores["F"] else "F"
         JP = "J" if scores["J"] > scores["P"] else "P"
         mbti = EI + SN + TF + JP
+
         deskripsi = desc_map.get(mbti, "Deskripsi tidak ditemukan.")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         try:
             worksheet = gc.open_by_key(SHEET_KEY).sheet1
             worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
-            st.session_state.submitted = True  # set flag sukses
+            st.session_state.submitted = True
         except Exception as e:
             st.error(f"Gagal menyimpan ke Google Sheet: {e}")
 
-        # === Tampilkan hasil ===
-         if st.session_state.submitted:
-        st.success("✅ Terima kasih telah mengisi tes!")
-        st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
-        st.info(deskripsi)
-        st.balloons()
-
-
-
-
-
-
-
-
+if st.session_state.submitted:
+    st.success("✅ Terima kasih telah mengisi tes!")
+    st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
+    st.info(deskripsi)
+    st.balloons()
