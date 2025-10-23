@@ -155,7 +155,7 @@ try:
     worksheet = gc.open_by_key(SHEET_KEY).sheet1
 except (RefreshError, APIError) as e:
     # fallback: coba via URL jika key gagal
-    SHEET_KEY = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit#gid=0"
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit#gid=0"
     try:
         worksheet = gc.open_by_url(SHEET_URL).sheet1
     except Exception as ee:
@@ -177,6 +177,7 @@ except (RefreshError, APIError) as e:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
