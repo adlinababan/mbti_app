@@ -164,3 +164,11 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
+        # === Reset session state untuk clear form ===
+        for i in range(1, 49):
+            st.session_state.pop(f"Q{i}", None)
+        st.session_state["form_mbti"] = False
+        st.experimental_rerun()
+
+
