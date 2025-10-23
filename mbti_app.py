@@ -11,19 +11,23 @@ from google.auth.exceptions import RefreshError
 from gspread.exceptions import APIError
 
 
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
-
+# === 1. Koneksi ke Google Sheets ===
+SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 creds = Credentials.from_service_account_info(
     dict(st.secrets["gcp_service_account"]),
     scopes=SCOPE
 )
 gc = gspread.authorize(creds)
 
-# === 3. Koneksi ke Google Sheets via URL ===
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
+# === 2. Buka Spreadsheet menggunakan KEY ===
+SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+
+try:
+    worksheet = gc.open_by_key(SHEET_KEY).sheet1
+    st.success("✅ Terhubung ke Google Sheet dengan sukses!")
+except Exception as e:
+    st.error(f"❌ Gagal membuka Google Sheet.\nCek apakah email service account sudah diberi akses Editor.\n\nError: {e}")
+    st.stop()
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -147,6 +151,13 @@ if submit:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # === Simpan ke Google Sheets === #
+        # Pastikan worksheet sudah terdefinisi
+        SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+        try:
+            worksheet = gc.open_by_key(SHEET_KEY).sheet1
+        except Exception as e:
+            st.error(f"Gagal mengakses Google Sheet: {e}")
+            st.stop()
         worksheet.append_row([timestamp, nama, prodi, gender, semester] + answers + [mbti, deskripsi])
 
 
@@ -157,6 +168,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
