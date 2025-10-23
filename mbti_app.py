@@ -13,15 +13,12 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_info(
-    dict(st.secrets["gcp_service_account"]),
-    scopes=SCOPE
-)
+creds = Credentials.from_service_account_info(dict(st.secrets["gcp_service_account"]), scopes=SCOPE)
 gc = gspread.authorize(creds)
 
-# === 3. Koneksi ke Google Sheets via URL ===
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0/edit?usp=sharing"
-worksheet = gc.open_by_url(SHEET_URL).sheet1  
+SHEET_KEY = "1LzT6-aUyW19FygQxycEA820MSPNKXqKHe_7IWBG5FW0"
+worksheet = gc.open_by_key(SHEET_KEY).sheet1
+st.success("✅ Koneksi ke Google Sheet berhasil!")
 
 # === 2. Pertanyaan MBTI ===
 questions = {
@@ -160,6 +157,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
