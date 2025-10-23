@@ -13,8 +13,8 @@ from gspread.exceptions import APIError
 
 # === 1. Koneksi ke Google Sheets ===
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_file(
-    "credentials.json",
+creds = Credentials.from_service_account_info(
+    dict(st.secrets["gcp_service_account"]),
     scopes=SCOPE
 )
 gc = gspread.authorize(creds)
@@ -167,6 +167,7 @@ if submit:
         st.markdown(f"### 🧠 Hasil MBTI Anda: **{mbti}**")
         st.info(deskripsi)
         st.balloons()
+
 
 
 
